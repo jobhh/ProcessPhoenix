@@ -1,6 +1,9 @@
 import com.android.build.gradle.BaseExtension
 
 buildscript {
+  ext {
+    kotlin_version = '1.9.22'
+  }
   repositories {
     mavenCentral()
     google()
@@ -9,6 +12,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:8.2.2'
     classpath 'com.vanniktech:gradle-maven-publish-plugin:0.27.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
@@ -20,8 +24,8 @@ allprojects {
 
   tasks.withType(BaseExtension).configureEach  {
     compileOptions {
-      sourceCompatibility JavaVersion.VERSION_1_7
-      targetCompatibility JavaVersion.VERSION_1_7
+      sourceCompatibility JavaVersion.VERSION_17
+      targetCompatibility JavaVersion.VERSION_17
     }
   }
 }
