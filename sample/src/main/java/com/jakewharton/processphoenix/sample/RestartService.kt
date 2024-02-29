@@ -37,6 +37,7 @@ class RestartService: Service() {
     Executors.newSingleThreadExecutor().execute {
       Thread.sleep(1000)
       ProcessPhoenix.triggerRebirth(this@RestartService, RestartService::class.java)
+//      ProcessPhoenix.triggerRebirth(this@RestartService, Intent(this@RestartService, RestartService::class.java))
     }
 
     return START_NOT_STICKY

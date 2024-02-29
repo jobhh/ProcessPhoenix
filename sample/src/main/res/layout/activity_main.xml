@@ -30,7 +30,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      android:text="Restart Process"
+      android:text="Restart Process with default app launch intent"
       />
 
   <Button
@@ -39,6 +39,14 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
       android:text="Restart Process with Intent"
+      />
+
+  <Button
+      android:id="@+id/restartActivity"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="Restart Process with MainActivity Class"
       />
 
   <Button

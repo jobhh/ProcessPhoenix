@@ -56,18 +56,47 @@ object ProcessPhoenix {
 
     if (Service::class.java.isAssignableFrom(targetClass)) {
       triggerServiceRebirth(context, nextIntent)
-    } else {
-      triggerRebirth(context, nextIntent)
+      return
     }
+
+    // Default to Activity rebirth
+    triggerActivityRebirth(context, nextIntent)
   }
 
   /**
    * Call to restart the application process using the specified intents.
+   * Please note: If the intents resolves to a Service only the first intent is used.
    *
    * Behavior of the current process after invoking this method is undefined.
    */
   @JvmStatic
   fun triggerRebirth(context: Context, vararg nextIntents: Intent) {
+    require(nextIntents.isNotEmpty()) { "intents cannot be empty" }
+
+    val firstIntent = nextIntents[0]
+    val pm = context.packageManager
+
+    if (pm.resolveActivity(firstIntent, 0) != null) {
+      triggerActivityRebirth(context, *nextIntents)
+      return
+    }
+
+    if (pm.resolveService(firstIntent, 0) != null) {
+      triggerServiceRebirth(context, firstIntent)
+      return
+    }
+
+    // If the first intent does not resolve to an Activity or Service, default to Activity rebirth
+    triggerActivityRebirth(context, *nextIntents)
+  }
+
+  /**
+   * Call to restart the application process using the specified Activity intents.
+   *
+   * Behavior of the current process after invoking this method is undefined.
+   */
+  @JvmStatic
+  fun triggerActivityRebirth(context: Context, vararg nextIntents: Intent) {
     require(nextIntents.isNotEmpty()) { "intents cannot be empty" }
 
     // create a new task for the first activity.

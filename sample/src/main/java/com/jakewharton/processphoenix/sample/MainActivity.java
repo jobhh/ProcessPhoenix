@@ -21,6 +21,7 @@ public final class MainActivity extends Activity {
     TextView extraTextView = findViewById(R.id.extra_text);
     View restartButton = findViewById(R.id.restart);
     View restartWithIntentButton = findViewById(R.id.restart_with_intent);
+    View restartActivityButton = findViewById(R.id.restartActivity);
     View restartServiceButton = findViewById(R.id.restart_service);
 
     processIdView.setText("Process ID: " + Process.myPid());
@@ -39,6 +40,13 @@ public final class MainActivity extends Activity {
         Intent nextIntent = new Intent(MainActivity.this, MainActivity.class);
         nextIntent.putExtra(EXTRA_TEXT, "Hello!");
         ProcessPhoenix.triggerRebirth(MainActivity.this, nextIntent);
+      }
+    });
+
+    restartActivityButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        ProcessPhoenix.triggerRebirth(MainActivity.this, MainActivity.class);
       }
     });
 
