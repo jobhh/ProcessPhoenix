@@ -36,8 +36,7 @@ object ProcessPhoenix {
   const val KEY_MAIN_PROCESS_PID = "phoenix_main_process_pid"
 
   /**
-   * Call to restart the application process using the [default][Intent.CATEGORY_DEFAULT]
-   * activity as an intent.
+   * Call to restart the application process using the default activity as an intent.
    *
    * Behavior of the current process after invoking this method is undefined.
    */
@@ -83,7 +82,7 @@ object ProcessPhoenix {
   }
 
   /**
-   * Call to restart the application process using the specified intent.
+   * Call to restart the application process using the specified Service intent.
    *
    * Behavior of the current process after invoking this method is undefined.
    */

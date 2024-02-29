@@ -23,7 +23,7 @@ import android.os.StrictMode
 
 /**
  * Please note that restarting a Service multiple times will result in an increasingly long delay between restart times.
- * This is a safety mechanism, since Android registers the restart as a restart of a crashed service.
+ * This is a safety mechanism, since Android registers the restart of this service as a crashed service.
  *
  * The observed delay periods are: 1s, 4s, 16s, 64s, 256s, 1024s. (on an Android 11 device)
  * Which seems to follow this pattern: 4^x, with x being the restart attempt minus 1.
