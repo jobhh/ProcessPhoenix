@@ -58,7 +58,6 @@ class PhoenixService: IntentService("PhoenixService") {
       startService(nextIntent)
     }
 
-    stopSelf()
     Runtime.getRuntime().exit(0) // Kill kill kill!
   }
 }
