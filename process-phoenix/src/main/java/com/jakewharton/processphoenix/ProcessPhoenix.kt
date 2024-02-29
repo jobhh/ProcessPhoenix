@@ -16,6 +16,7 @@
 package com.jakewharton.processphoenix
 
 import android.app.ActivityManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,6 +31,7 @@ import android.os.Process
  * Trigger process recreation by calling [triggerRebirth] with a [Context] instance.
  */
 object ProcessPhoenix {
+  const val KEY_RESTART_INTENT = "phoenix_restart_intent"
   const val KEY_RESTART_INTENTS = "phoenix_restart_intents"
   const val KEY_MAIN_PROCESS_PID = "phoenix_main_process_pid"
 
@@ -42,6 +44,22 @@ object ProcessPhoenix {
   @JvmStatic
   fun triggerRebirth(context: Context) {
     triggerRebirth(context, getRestartIntent(context))
+  }
+
+  /**
+   * Call to restart the application process using the provided targetClass as an intent.
+   *
+   * Behavior of the current process after invoking this method is undefined.
+   */
+  @JvmStatic
+  fun triggerRebirth(context: Context, targetClass: Class<*>) {
+    val nextIntent = Intent(context, targetClass)
+
+    if (Service::class.java.isAssignableFrom(targetClass)) {
+      triggerServiceRebirth(context, nextIntent)
+    } else {
+      triggerRebirth(context, nextIntent)
+    }
   }
 
   /**
@@ -62,6 +80,20 @@ object ProcessPhoenix {
       putExtra(KEY_MAIN_PROCESS_PID, Process.myPid())
     }
     context.startActivity(intent)
+  }
+
+  /**
+   * Call to restart the application process using the specified intent.
+   *
+   * Behavior of the current process after invoking this method is undefined.
+   */
+  @JvmStatic
+  fun triggerServiceRebirth(context: Context, nextIntent: Intent) {
+    val intent = Intent(context, PhoenixService::class.java).apply {
+      putExtra(KEY_RESTART_INTENT, nextIntent)
+      putExtra(KEY_MAIN_PROCESS_PID, Process.myPid())
+    }
+    context.startService(intent)
   }
 
   @JvmStatic
