@@ -15,10 +15,9 @@
  */
 package com.jakewharton.processphoenix
 
-import android.app.Service
+import android.app.IntentService
 import android.content.Intent
 import android.os.Build
-import android.os.IBinder
 import android.os.Process
 import android.os.StrictMode
 
@@ -29,22 +28,10 @@ import android.os.StrictMode
  * The observed delay periods are: 1s, 4s, 16s, 64s, 256s, 1024s. (on an Android 11 device)
  * Which seems to follow this pattern: 4^x, with x being the restart attempt minus 1.
  */
-class PhoenixService: Service() {
+class PhoenixService: IntentService("PhoenixService") {
 
-  override fun onBind(intent: Intent?): IBinder? = null
-
-  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    // Prepare Notification and call startForeground, if needed
-    if (Build.VERSION.SDK_INT >= 26) {
-      startForeground(1337, NotificationBuilder.createNotification(this@PhoenixService))
-    }
-
-    intent ?: kotlin.run {
-      // If this is a null Intent it means we were closed and restarted by the Android OS
-      // This should never happen, since we return START_NOT_STICKY, but we check just in case
-      stopSelf()
-      return START_NOT_STICKY
-    }
+  override fun onHandleIntent(intent: Intent?) {
+    intent ?: return
 
     // Kill original main process
     Process.killProcess(intent.getIntExtra(ProcessPhoenix.KEY_MAIN_PROCESS_PID, -1))
@@ -73,6 +60,5 @@ class PhoenixService: Service() {
 
     stopSelf()
     Runtime.getRuntime().exit(0) // Kill kill kill!
-    return START_NOT_STICKY
   }
 }

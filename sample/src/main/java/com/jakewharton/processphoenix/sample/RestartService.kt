@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.IBinder
 import android.os.Process
 import android.util.Log
-import com.jakewharton.processphoenix.NotificationBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import java.util.concurrent.Executors
 

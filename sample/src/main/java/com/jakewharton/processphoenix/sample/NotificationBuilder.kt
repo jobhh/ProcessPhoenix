@@ -1,4 +1,4 @@
-package com.jakewharton.processphoenix
+package com.jakewharton.processphoenix.sample
 
 import android.Manifest
 import android.annotation.TargetApi
